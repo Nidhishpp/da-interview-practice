@@ -19,6 +19,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Add Study Materials navigation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='<header class="top">'
+          link='<a href="./study.html" style="text-decoration:none;color:#2867ed;font-weight:800;margin-left:12px">📚 Study</a>'
+          if link not in s and marker in s:
+              s=s.replace(marker, marker+link, 1)
+              p.write_text(s, encoding='utf-8')
+          PY
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
